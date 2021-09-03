@@ -157,7 +157,7 @@ function updateBasketTable(basketItemId, res)
 	{
 		return;
 	}
-
+	console.log(1);
 	rows = table.rows;
 	lastRow = rows[rows.length - 1];
 	bUseFloatQuantity = (res.PARAMS.QUANTITY_FLOAT === 'Y');

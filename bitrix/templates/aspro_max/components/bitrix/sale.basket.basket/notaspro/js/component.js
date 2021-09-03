@@ -435,13 +435,14 @@
 		fillBasketBlock: function()
 		{
 			var priceBlock = document.getElementsByClassName('basket-coupon-block-total-price-current')[0];
+			var discountBlock = document.getElementById('discount-price-formated');
 			var discount;
 			if(this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED && this.result.TOTAL_RENDER_DATA.DISCOUNT_PRICE_FORMATED)
 				document.getElementsByClassName('basket-coupon-block-total-price-old')[0].innerHTML = this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED;
 			priceBlock.innerHTML = this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED;
 			document.getElementById('price-nds-block').innerHTML = ' Сумма НДС: '+this.result.TOTAL_RENDER_DATA.VAT_SUM_FORMATED;
-			if(discount = this.result.TOTAL_RENDER_DATA.PRICE_FORMATED)
-				document.getElementById('discount-price-formated').innerHTML = discount;
+			if(discount = this.result.TOTAL_RENDER_DATA.PRICE_FORMATED && discountBlock)
+				discountBlock.innerHTML = discount;
 
 		},
 
@@ -2353,23 +2354,21 @@
 				clonedData.USE_FILTER = this.useItemsFilter
 					&& !this.filter.currentFilter.similarHash.length;
 			}
-			console.log(clonedData);
 			return Mustache.render(template, clonedData);
 		},
 
 		changeBasketItem: function(data){
 			// var clonedData = BX.clone(data);
-			console.log(this.result);
 			var itemPrice = document.getElementById('basket-item-sum-price-'+data.ID);		
 			var priceBlock = document.getElementsByClassName('basket-coupon-block-total-price-current')[0];
-			
+			var discountBlock = document.getElementById('discount-price-formated');
 			var discount;
 			if(this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED && this.result.TOTAL_RENDER_DATA.DISCOUNT_PRICE_FORMATED)
 				document.getElementsByClassName('basket-coupon-block-total-price-old')[0].innerHTML = this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED;
 			priceBlock.innerHTML = this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED;
 			document.getElementById('price-nds-block').innerHTML = ' Сумма НДС: '+this.result.TOTAL_RENDER_DATA.VAT_SUM_FORMATED;
-			if(discount = this.result.TOTAL_RENDER_DATA.PRICE_FORMATED)
-				document.getElementById('discount-price-formated').innerHTML = discount;
+			if(discount = this.result.TOTAL_RENDER_DATA.PRICE_FORMATED && discountBlock)
+				discountBlock.innerHTML = discount;
 			return true;
 		},
 
