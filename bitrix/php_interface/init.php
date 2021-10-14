@@ -76,6 +76,19 @@ class aspro_import
     {
         \Bitrix\Main\Loader::includeModule('iblock');
         \Bitrix\Main\Loader::includeModule('catalog');
+        /* обновление названий разделов */
+        $arFilter = array('IBLOCK_ID' => 26);
+        $rsSections = CIBlockSection::GetList(array('NAME' => 'ASC'), $arFilter, false, ['ID', 'NAME']);
+        while ($arSection = $rsSections->Fetch())
+        {
+            
+            $bs = new CIBlockSection;
+            $arFields['NAME'] = preg_replace('/[0-9]{2}.[0-9]{2} /', '', $arSection['NAME']);
+            $arFields['NAME'] = preg_replace('/[0-9]{2}./', '', $arSection['NAME']);
+            AddMessage2Log($arSection['NAME'] . $arFields['NAME']);
+            $arFields['CODE'] = CUtil::translit($arFields['NAME'], 'ru');
+            $res = $bs->Update($arSection['ID'], $arFields);
+        }
         $arElementsID = $arElements = $arBrandIDByName = $arBrandIDByCode = $arOffersID = $arOffers = $arElementIDByOfferID = $arQuantity = array();
 
         // get elements whitch has been changed in 2 last hours
@@ -160,3 +173,17 @@ class aspro_import
         }
     }
 }
+AddEventHandler("iblock", "OnBeforeIBlockSectionUpdate", Array("haClassEvents", "OnBeforeIBlockSectionUpdateHandler"));
+AddEventHandler("iblock", "OnBeforeIBlockSectionAdd", Array("haClassEvents", "OnBeforeIBlockSectionUpdateHandler"));
+
+class haClassEvents
+{
+    // создаем обработчик события "OnBeforeIBlockSectionUpdate"
+    function OnBeforeIBlockSectionUpdateHandler(&$arFields)
+    {
+        AddMessage2Log($arFields['NAME']);
+        $arFields['NAME'] = preg_replace('/[0-9]{2}.[0-9]{2} /', '', $arFields['NAME']);
+        $arFields['CODE'] = CUtil::translit($arFields['NAME'], 'ru');
+    }
+}
+?>

@@ -129,6 +129,24 @@ $(document).ready(function(){
 });
 
 (function (window) {
+	// $(document).on('change', '[name="quantity"]', function(){
+		
+	// 	var quantity = $(this).val();
+	// 	var parent = $(this).closest('.footer_button');
+	// 	var price = parent.closest('.inner_wrap').find('.price_value').html();
+		
+	// 	price = price.replace('&nbsp;', '');
+	// 	price = parseInt(price);
+	// 	console.log(parent);
+	// 	if(parent.find('.price_all').length < 1){
+	// 		parent.html('<span class="price_all">' + quantity * price + '₽</span>' + parent.html());
+	// 		parent.find('[name="quantity"]').val(2);
+	// 	}else if(quantity == 1){
+	// 		parent.find('.price_all').html('');
+	// 	}else{
+	// 		parent.find('.price_all').html(quantity * price + '₽');
+	// 	}
+	// });
 if (!window.JCCatalogSectionOnlyElement)
 {
 

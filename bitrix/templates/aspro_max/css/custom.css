@@ -1,17 +1,23 @@
-#basket-root .basket-items-list-item-amount{
-    min-width: 170px;
+#basket-root .basket-items-list-item-amount {
+    min-width: 200px;
 }
 
-#basket-root .basket-items-list-item-price-for-one{
-    min-width: 120px;
-}
-#basket-root .basket-items-list-item-price{
+#basket-root .basket-items-list-item-price-for-one {
     min-width: 120px;
 }
 
-#basket-root .basket-checkout-block.basket-checkout-block-total-price{
+#basket-root .basket-items-list-item-price {
+    min-width: 140px;
+}
+
+#basket-root .basket-checkout-block.basket-checkout-block-total-price {
+    min-width: 200px;
+}
+
+#basket-root .basket-checkout-block.basket-checkout-block-total {
     min-width: 170px;
 }
-#basket-root .basket-checkout-block.basket-checkout-block-total{
-    min-width: 150px;
+
+#basket-root .basket-checkout-container{
+    opacity: 1;
 }
