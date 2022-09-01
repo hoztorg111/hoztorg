@@ -1142,7 +1142,13 @@ body #mobilefilter .bx_filter_vertical .bx_filter_section .bx_filter_button_box.
 .catalog .catalog_block{padding:0px 0px 0px 0px;width:100%;}
 
 .catalog_block.items{width: 100%;}
-body .catalog_block.items .item_block.item{padding:0px 0px 0px 0px;margin-left: 0px;}
+body .catalog_block.items .item_block.item{
+    padding:0px 0px 0px 0px;margin-left: 0px;
+}
+
+.catalog_block .catalog_item {
+    background: #000;
+}
 
 .button_block .btn-sm{font-size:13px;}
 

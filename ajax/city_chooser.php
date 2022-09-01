@@ -27,51 +27,54 @@
 	);?>
 
 	<script type="text/javascript">
-		if(arMaxOptions['THEME']['REGIONALITY_SEARCH_ROW'] != 'Y')
-		{
-			$("#search").autocomplete({
-				minLength: 2,
-				source: arRegions,
-				appendTo : $(".autocomplete").parent(),
-				select: function(event, ui) {
-					$.removeCookie('current_region');
-					$.cookie('current_region', ui.item.ID, {path: '/',domain: arMaxOptions['SITE_ADDRESS']});
-					$("#search").val(ui.item.label);
-					return false;
-		      }
-			}).data("ui-autocomplete")._renderItem = function(ul, item){
-				var region = (item.REGION ? " ("+item.REGION +")" : "");
-		    	return $("<li>")
-		       		.append("<a href='" + item.HREF + "' class='cityLink'>" + item.label +region +"</a>")
-		        	.appendTo(ul);
-		    }
-		}
-		else
-		{
-			$("#search").autocomplete({
-				minLength: 2,
-				source: function(request, response){
-					console.log(request)
-					$.getJSON( arMaxOptions['SITE_DIR']+'ajax/city_select.php', {
-			            term: request.term,
-			            url: '<?=$urlback;?>'
-			          }, response );
-					
-				},
-				// source: arMaxOptions['SITE_DIR']+'ajax/city_select.php',
-				appendTo : $(".autocomplete").parent(),
-				select: function(event, ui) {
-					$.removeCookie('current_region');
-					$.cookie('current_region', ui.item.ID, {path: '/',domain: arMaxOptions['SITE_ADDRESS']});
-					$("#search").val(ui.item.label);
-					return false;
-		      }
-			}).data("ui-autocomplete")._renderItem = function(ul, item){
-				var region = (item.REGION ? " ("+item.REGION +")" : "");
-		    	return $("<li>")
-		       		.append("<a href='" + item.HREF + "' class='cityLink'>" + item.label +region +"</a>")
-		        	.appendTo(ul);
-		    }
+		BX.loadScript('<?=SITE_TEMPLATE_PATH;?>/js/jquery-ui.min.js', autocompleteHandler);
+		function autocompleteHandler(){
+			if(arMaxOptions['THEME']['REGIONALITY_SEARCH_ROW'] != 'Y')
+			{
+				$("#search").autocomplete({
+					minLength: 2,
+					source: arRegions,
+					appendTo : $(".autocomplete").parent(),
+					select: function(event, ui) {
+						$.removeCookie('current_region');
+						$.cookie('current_region', ui.item.ID, {path: '/',domain: arMaxOptions['SITE_ADDRESS']});
+						$("#search").val(ui.item.label);
+						return false;
+				}
+				}).data("ui-autocomplete")._renderItem = function(ul, item){
+					var region = (item.REGION ? " ("+item.REGION +")" : "");
+					return $("<li>")
+						.append("<a href='" + item.HREF + "' class='cityLink'>" + item.label +region +"</a>")
+						.appendTo(ul);
+				}
+			}
+			else
+			{
+				$("#search").autocomplete({
+					minLength: 2,
+					source: function(request, response){
+						console.log(request)
+						$.getJSON( arMaxOptions['SITE_DIR']+'ajax/city_select.php', {
+							term: request.term,
+							url: '<?=$urlback;?>'
+						}, response );
+						
+					},
+					// source: arMaxOptions['SITE_DIR']+'ajax/city_select.php',
+					appendTo : $(".autocomplete").parent(),
+					select: function(event, ui) {
+						$.removeCookie('current_region');
+						$.cookie('current_region', ui.item.ID, {path: '/',domain: arMaxOptions['SITE_ADDRESS']});
+						$("#search").val(ui.item.label);
+						return false;
+				}
+				}).data("ui-autocomplete")._renderItem = function(ul, item){
+					var region = (item.REGION ? " ("+item.REGION +")" : "");
+					return $("<li>")
+						.append("<a href='" + item.HREF + "' class='cityLink'>" + item.label +region +"</a>")
+						.appendTo(ul);
+				}
+			}
 		}
 
 	    var current_region_item = $('.cities .items_block .item.current'),

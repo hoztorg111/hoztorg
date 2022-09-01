@@ -17,6 +17,8 @@ $url_sizes = (htmlspecialchars($_REQUEST['url']) ? htmlspecialchars($_REQUEST['u
 	<?include('fast_view.php');?>
 <?elseif($form_id == 'fast_view_sale'):?>
 	<?include('fast_view_sale.php');?>
+<?elseif($form_id == 'fast_view_services'):?>
+	<?include('fast_view_services.php');?>
 <?elseif($form_id == 'city_chooser'):?>
 	<?include('city_chooser.php');?>
 <?elseif($form_id == 'subscribe'):?>

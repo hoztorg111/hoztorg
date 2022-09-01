@@ -6,8 +6,12 @@ if(isset($_GET['iblock_id']) && $_GET['iblock_id'])
 	global $APPLICATION, $arRegion, $arTheme;
 	$arRegion = CMaxRegionality::getCurrentRegion();
 	$arTheme = CMax::GetFrontParametrsValues(SITE_ID);
-	$url = htmlspecialcharsbx(urldecode($_GET['item_href']));
+	
+	$context = \Bitrix\Main\Application::getInstance()->getContext();
+	$request = $context->getRequest();
 
+	$href = $request['item_href'] ?? $result['DETAIL_PAGE_URL']; // from fastViewNav.php
+	$url = str_replace('&amp;', '&', $href );
 
 	\Bitrix\Main\Loader::includeModule('sale');
 	\Bitrix\Main\Loader::includeModule('currency');
@@ -54,9 +58,12 @@ if(isset($_GET['iblock_id']) && $_GET['iblock_id'])
 
 				InitLazyLoad();
 				// InitOwlSlider();
-				InitFancyBox();
-				InitFancyBoxVideo();
-
+				BX.loadScript(arAsproOptions.SITE_TEMPLATE_PATH + '/js/jquery.fancybox.min.js', function(event){
+					BX.loadCSS(arAsproOptions.SITE_TEMPLATE_PATH + '/css/jquery.fancybox.min.css');
+					InitFancyBox();
+					InitFancyBoxVideo();
+				})
+				
 				// init calculate delivery with preview
 				if($('#fast_view_item .fastview-product.noffer').length){
 					initCalculatePreview();

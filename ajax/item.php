@@ -34,7 +34,7 @@ if(isset($_REQUEST["type"]) && $_REQUEST["type"] == "multiple")
 		{
 			foreach($request["items"] as $arItem)
 			{
-				if($arItem["product_type"] != 3) // not sku
+				if($arItem["product_type"] != 3 || $arItem['add_offer'] == 'Y') // not sku
 				{
 					if($arBasketItems[$arItem["id"]])
 					{
@@ -60,6 +60,7 @@ if(isset($_REQUEST["type"]) && $_REQUEST["type"] == "multiple")
 		}
 		elseif($request["action"] == "wish") //delay items
 		{
+			$arDelayId = array();
 			foreach($request["items"] as $arItem)
 			{
 				if($arItem["product_type"] != 3) // not sku
@@ -68,6 +69,7 @@ if(isset($_REQUEST["type"]) && $_REQUEST["type"] == "multiple")
 					{
 						$arFields = array("DELAY" => "Y", "SUBSCRIBE" => "N", "QUANTITY" => $arItem["quantity"]);
 						CSaleBasket::Update($arBasketItems[$arItem["id"]]["ID"], $arFields);
+						$arDelayId[] = $arItem["id"];
 					}
 					else
 					{
@@ -89,6 +91,9 @@ if(isset($_REQUEST["type"]) && $_REQUEST["type"] == "multiple")
 						}
 					}
 				}
+			}
+			if( is_array($arDelayId) && count($arDelayId) > 0 ){
+				CMax::deleteBasketServices($arDelayId);
 			}
 		}
 		elseif($request["action"] == "compare") //compare items
@@ -120,7 +125,7 @@ if(isset($_REQUEST["type"]) && $_REQUEST["type"] == "multiple")
 	die();
 }
 else
-{
+{	
 	if(!empty($_REQUEST["add_item"]))
 	{
 		if($_REQUEST["add_item"] == "Y")
@@ -162,6 +167,7 @@ else
 									$_REQUEST["prop"],
 									$_REQUEST['part_props'] == 'Y'
 								);
+								
 								if (!is_array($product_properties))
 								{
 									$strError = "CATALOG_PARTIAL_BASKET_PROPERTIES_ERROR";
@@ -193,7 +199,29 @@ else
 				}
 				if($successfulAdd)
 				{
-					if(!Add2BasketByProductID($_REQUEST["item"], $_REQUEST["quantity"], $arRewriteFields, $product_properties))
+					$bNeedAddAction = true;
+					if(isset($_REQUEST["prop"]['ASPRO_BUY_PRODUCT_ID']) && $_REQUEST["prop"]['ASPRO_BUY_PRODUCT_ID']>0){
+						$product_properties[] = array("NAME" => 'link_id', "CODE" => 'ASPRO_BUY_PRODUCT_ID', 'VALUE' => htmlspecialcharsEx($_REQUEST["prop"]['ASPRO_BUY_PRODUCT_ID']));
+
+						//need for sort in admin
+						$dbBasketItemParent = CSaleBasket::GetList(
+							array("NAME" => "ASC", "ID" => "ASC"),
+							array("PRODUCT_ID" => $_REQUEST["prop"]['ASPRO_BUY_PRODUCT_ID'], "FUSER_ID" => CSaleBasket::GetBasketUserID(), "LID" => SITE_ID, "ORDER_ID" => "NULL"),
+							false, false, array("ID", "DELAY", "SORT")
+						)->Fetch();
+						if(!empty($dbBasketItemParent) && isset($dbBasketItemParent["SORT"]))
+						{
+							$arRewriteFields = array("SORT" => $dbBasketItemParent["SORT"] );
+						}
+						/////
+						if(empty($dbBasketItemParent)){
+							$strError = 'PARENT_ITEM_NOT_FOUND';
+							$successfulAdd = false;
+							$bNeedAddAction = false;
+						}
+					}
+
+					if($bNeedAddAction && !Add2BasketByProductID($_REQUEST["item"], $_REQUEST["quantity"], $arRewriteFields, $product_properties))
 					{
 						if ($ex = $APPLICATION->GetException())
 							$strErrorExt = $ex->GetString();
@@ -201,6 +229,57 @@ else
 						$strError = "ERROR_ADD2BASKET";
 						$successfulAdd = false;
 					}
+
+
+					/*add_services*/
+					if(!empty($_REQUEST["services"])) //buy items
+					{
+						$product_properties_services = array();
+						if( isset($_REQUEST["services"][0]) && $_REQUEST["services"][0]["id"] >0 ){
+							$product_properties_services = CIBlockPriceTools::CheckProductProperties(
+								$_REQUEST["services"][0]["iblock_id"],
+								$_REQUEST["services"][0]["id"],
+								array("BUY_PRODUCT_PROP"),
+								array("BUY_PRODUCT_PROP" => htmlspecialcharsEx($_REQUEST["item"])),
+								'Y'
+							);
+							$product_properties_services = is_array($product_properties_services) ? $product_properties_services : array();
+						}
+						
+						$product_properties_services[] = array("NAME" => 'link_id', "CODE" => 'ASPRO_BUY_PRODUCT_ID', 'VALUE' => htmlspecialcharsEx($_REQUEST["item"]));
+
+						//need for sort in admin
+						$dbBasketItemParent = CSaleBasket::GetList(
+							array("NAME" => "ASC", "ID" => "ASC"),
+							array("PRODUCT_ID" => $_REQUEST["item"], "FUSER_ID" => CSaleBasket::GetBasketUserID(), "LID" => SITE_ID, "ORDER_ID" => "NULL"),
+							false, false, array("ID", "DELAY", "SORT")
+						)->Fetch();
+						if(!empty($dbBasketItemParent) && isset($dbBasketItemParent["SORT"]))
+						{
+							$arRewriteFields = array("SORT" => $dbBasketItemParent["SORT"] );
+						}
+						/////						
+						
+						foreach($_REQUEST["services"] as $arItem)
+						{
+							if($arItem["id"]) // not empty id
+							{								
+								if(!Add2BasketByProductID($arItem["id"], $arItem["quantity"], $arRewriteFields, $product_properties_services))
+								{
+									if($ex = $APPLICATION->GetException())
+									{
+										$strErrorExt .= '<br>'.$ex->GetString();
+									}
+									
+									$strError = "ERROR_ADD2BASKET";
+									$successfulAdd = false;
+								}
+								
+							}
+						}
+					}
+					/**/
+
 				}
 			}
 			if ($successfulAdd)
@@ -337,6 +416,7 @@ else
 					$arFields['QUANTITY'] = $_REQUEST["quantity"];
 				}
 				CSaleBasket::Update($dbBasketItems["ID"], $arFields);
+				CMax::deleteBasketServices(array($_REQUEST["item"]));
 			}
 			elseif(!empty($dbBasketItems) && $dbBasketItems["DELAY"] == "Y")
 			{
@@ -406,8 +486,38 @@ else
 			array("PRODUCT_ID" => $_REQUEST["item"], "FUSER_ID" => CSaleBasket::GetBasketUserID(), "LID" => SITE_ID, "ORDER_ID" => "NULL"),
 			false, false, array("ID", "DELAY")
 		)->Fetch();
-		if(!empty($dbBasketItems))
-			CSaleBasket::Delete($dbBasketItems["ID"]);	
+		if(!empty($dbBasketItems)){
+			CSaleBasket::Delete($dbBasketItems["ID"]);
+			CMax::deleteBasketServices(array($_REQUEST["item"]));
+		}
+				
+	}
+	elseif(!empty($_REQUEST["delete_basket_id"]))
+	{
+		$deleteId = htmlspecialcharsEx($_REQUEST["delete_basket_id"]) ;
+		if(!empty($deleteId)){
+			CSaleBasket::Delete($deleteId);
+			if( !empty($_REQUEST["product_id"]) ){
+				CMax::deleteBasketServices(array($_REQUEST["product_id"]));
+			}
+		}				
+	}
+	elseif(!empty($_REQUEST["update_basket_id"]))
+	{
+		$updateId = htmlspecialcharsEx($_REQUEST["update_basket_id"]) ;
+		if(!empty($updateId)){
+			$arFields = array("DELAY" => "N", "SUBSCRIBE" => "N");
+			if($_REQUEST["quantity"]){
+				$arFields['QUANTITY'] = $_REQUEST["quantity"];
+			}
+			CSaleBasket::Update($updateId, $arFields);
+		}			
+	}
+	elseif(!empty($_REQUEST["delete_linked_services"]))
+	{
+		$deleteId = htmlspecialcharsEx($_REQUEST["delete_linked_services"]) ;
+		if(!empty($deleteId))
+			CMax::deleteBasketServices(array($deleteId));
 	}
 }
 

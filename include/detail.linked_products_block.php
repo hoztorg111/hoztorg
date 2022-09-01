@@ -15,10 +15,10 @@ if($arRegion)
 	if($catalogID = \Bitrix\Main\Config\Option::get("aspro.max", "CATALOG_IBLOCK_ID", \Bitrix\Main\Config\Option::get("aspro.max", "CATALOG_IBLOCK_ID", '26')))
 	{
 		$GLOBALS['arrProductsFilter']['IBLOCK_ID'] = $catalogID;
-		CMax::makeElementFilterInRegion($GLOBALS['arrProductsFilter']);
-		if(is_array($GLOBALS['arRegionLink'])){
-			$GLOBALS['arrProductsFilter'] = array_merge($GLOBALS['arRegionLink'], $GLOBALS['arrProductsFilter']);
-		}
+		if(($arParams["FILTER_NAME"] == 'arRegionLink' || CMax::GetFrontParametrValue('REGIONALITY_FILTER_CATALOG') == 'Y') && CMax::GetFrontParametrValue('REGIONALITY_FILTER_ITEM') == 'Y'){
+				$GLOBALS['arrProductsFilter']['PROPERTY_LINK_REGION'] = $arRegion['ID'];
+				CMax::makeElementFilterInRegion($GLOBALS['arrProductsFilter']);
+			}
 	}
 }
 ?>

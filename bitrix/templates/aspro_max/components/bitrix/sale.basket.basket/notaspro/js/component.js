@@ -60,7 +60,7 @@
 
 			this.lastAction = 'initialLoad';
 			this.coupons = null;
-			this.popupDelete = null;
+
 			this.imagePopup = null;
 			this.loadingScreen = null;
 
@@ -437,15 +437,12 @@
 			var priceBlock = document.getElementsByClassName('basket-coupon-block-total-price-current')[0];
 			var discountBlock = document.getElementById('discount-price-formated');
 			var discount;
-			if(this.result.PRICE_WITHOUT_DISCOUNT && this.result.TOTAL_RENDER_DATA.DISCOUNT_PRICE_FORMATED)
-				document.getElementsByClassName('basket-coupon-block-total-price-old')[0].innerHTML = this.result.PRICE_WITHOUT_DISCOUNT;
-			
-			priceBlock.innerHTML = this.result.PRICE_WITHOUT_DISCOUNT;
-			$('[data-entity="basket-total-price"]').html(this.result.PRICE_WITHOUT_DISCOUNT);
+			if(this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED && this.result.TOTAL_RENDER_DATA.DISCOUNT_PRICE_FORMATED)
+				document.getElementsByClassName('basket-coupon-block-total-price-old')[0].innerHTML = this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED;
+			priceBlock.innerHTML = this.result.TOTAL_RENDER_DATA.PRICE_WITHOUT_DISCOUNT_FORMATED;
 			document.getElementById('price-nds-block').innerHTML = ' Сумма НДС: '+this.result.TOTAL_RENDER_DATA.VAT_SUM_FORMATED;
 			if(discount = this.result.TOTAL_RENDER_DATA.PRICE_FORMATED && discountBlock)
 				discountBlock.innerHTML = discount;
-			priceBlock.innerHTML = this.result.PRICE_WITHOUT_DISCOUNT;
 
 		},
 
@@ -684,11 +681,11 @@
 					this.applyBasketResult(result.BASKET_DATA);
 					this.editBasketItems(this.getItemsToEdit());
 					var editTotalIndicator = false;
-					// if(this.result.FULL_DISCOUNT_LIST.length > 0)
-					// 	editTotalIndicator = true;
+					if(this.result.FULL_DISCOUNT_LIST.length > 0)
+						editTotalIndicator = true;
 					this.editTotal(editTotalIndicator);
 
-					// this.applyPriceAnimation();
+					this.applyPriceAnimation();
 					this.editWarnings();
 
 					this.actionPool.switchTimer();
@@ -1305,7 +1302,7 @@
 			{
 				return;
 			}
-			
+
 			var i, item;
 
 			for (i in itemIds)
@@ -1330,8 +1327,7 @@
 				if (BX.type.isDomNode(BX(this.ids.item + item.ID)))
 				{
 					// this.redrawBasketItemNode(item.ID);
-					
-					this.redrawNewBasketItemNode(item.ID, this.actionPool.isBasketRefreshed);
+					this.redrawNewBasketItemNode(item.ID);
 					this.applyQuantityAnimation(item.ID);
 				}
 				else
@@ -1655,7 +1651,7 @@
 				}
 			}
 		},
-		redrawNewBasketItemNode: function(itemId, newActionPool)
+		redrawNewBasketItemNode: function(itemId)
 		{
 			
 			var basketItemNode = BX(this.ids.item + itemId);
@@ -1672,23 +1668,11 @@
 				{
 					oldHeight = nodeAligner.clientHeight;
 				}
-				var actionPool = this.actionPool.lastActualPool;
-				var action = 'RESTORE';
-				for (const [key, value] of Object.entries(actionPool)) {
-					console.log(value.QUANTITY);
-					console.log(value.RESTORE);
-					if(value.QUANTITY != undefined && value.RESTORE == undefined)
-						action = "QUANTITY";
-				}
-
-				console.log(action);
-				if(action == 'RESTORE'){
-					var basketItemHtml = this.renderBasketItem(basketItemTemplate, this.items[itemId]);
-					basketItemNode.insertAdjacentHTML('beforebegin', basketItemHtml);
-					BX.remove(basketItemNode);
-				}else{
-					this.changeBasketItem(this.items[itemId]);
-				}
+				
+				// var basketItemHtml = this.renderBasketItem(basketItemTemplate, this.items[itemId]);
+				this.changeBasketItem(this.items[itemId]);
+				// basketItemNode.insertAdjacentHTML('beforebegin', basketItemHtml);
+				// BX.remove(basketItemNode);
 
 				if (oldHeight)
 				{
@@ -1939,6 +1923,7 @@
 		{
 			var quantityField = BX(this.ids.quantity + itemData.ID),
 				currentQuantity;
+
 			if (quantityField)
 			{
 				quantity = parseFloat(quantity);
@@ -2264,18 +2249,6 @@
 				}
 
 				this.redrawBasketItemNode(itemData.ID);
-
-				this.popupDelete = BX.PopupWindowManager.create("popup-message", null, {
-					content: "Через 5 секунд товар будет удален безвозвратно",
-					darkMode: true,
-					autoHide: true,
-				});
-				this.popupDelete.show();
-				
-				setTimeout(function(){
-					this.BX.PopupWindowManager._currentPopup.destroy();
-					BX.Sale.BasketComponent.deleteBasketItem(itemData.ID, false, true);
-				}, 5000);
 			}
 		},
 

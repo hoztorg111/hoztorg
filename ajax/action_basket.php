@@ -27,8 +27,14 @@
 	{
 		foreach($arItems as $key => $arItem)
 		{
-			foreach($arItem as $id)
-				CSaleBasket::Delete($id);
+			
+			foreach($arItem as $id){
+				if($key === 'SERVICES'){
+					CSaleBasket::Delete($id["item_id"]);
+				} else {
+					CSaleBasket::Delete($id);
+				}
+			}
 		}
 	}
 	else

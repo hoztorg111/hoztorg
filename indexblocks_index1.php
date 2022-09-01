@@ -216,4 +216,29 @@
 		<?endif;?>
 
 	<?endforeach;?>
+    <?if($APPLICATION->GetProperty("viewed_show") == "Y"):?>
+        <div class="drag-block container" data-class="company_text_drag" data-order="15">
+            <?$APPLICATION->IncludeComponent(
+                "bitrix:main.include",
+                "basket",
+                array(
+                    "COMPONENT_TEMPLATE" => "basket",
+                    "PATH" => SITE_DIR."include/mainpage/comp_viewed.php",
+                    "AREA_FILE_SHOW" => "file",
+                    "AREA_FILE_SUFFIX" => "",
+                    "AREA_FILE_RECURSIVE" => "Y",
+                    "EDIT_TEMPLATE" => "standard.php",
+                    "PRICE_CODE" => array(
+                        0 => "BASE",
+                    ),
+                    "STORES" => array(
+                        0 => "",
+                        1 => "",
+                    ),
+                    "BIG_DATA_RCM_TYPE" => "bestsell"
+                ),
+                false
+            );?>
+        </div>
+    <?endif;?>
 <?endif;?>

@@ -13,12 +13,14 @@
 		"FILTER_NAME" => "arRegionLinkFront",
 		"FIELD_CODE" => array(
 			0 => "PREVIEW_PICTURE",
-			1 => "ACTIVE_TO",
-			2 => "DATE_ACTIVE_FROM",
+			1 => "DATE_ACTIVE_FROM",
+			2 => "ACTIVE_TO",
+			3 => "",
 		),
 		"PROPERTY_CODE" => array(
 			0 => "PERIOD",
 			1 => "SALE_NUMBER",
+			2 => "",
 		),
 		"CHECK_DATES" => "Y",
 		"DETAIL_URL" => "",
@@ -64,15 +66,16 @@
 		"ALL_URL" => "sale/",
 		"PAGER_BASE_LINK_ENABLE" => "N",
 		"SHOW_404" => "N",
-		"CHECK_REQUEST_BLOCK" => CMax::checkRequestBlock('sale'),
-		"MOBILE_TEMPLATE" => $GLOBALS['arTheme']['MOBILE_SALE']['VALUE'],
+		"CHECK_REQUEST_BLOCK" => CMax::checkRequestBlock("sale"),
+		"MOBILE_TEMPLATE" => $GLOBALS["arTheme"]["MOBILE_SALE"]["VALUE"],
 		"NO_MARGIN" => "N",
 		"TRANSPARENT" => "Y",
 		"FILLED" => "N",
 		"SIZE_IN_ROW" => "3",
 		"TYPE_IMG" => "lg",
 		"IS_AJAX" => CMax::checkAjaxRequest(),
-		"MESSAGE_404" => ""
+		"MESSAGE_404" => "",
+		"INCLUDE_FILE" => ""
 	),
 	false
 );?>

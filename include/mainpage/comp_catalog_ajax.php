@@ -37,8 +37,8 @@ if($bAjaxMode)
 	if(is_array($arGlobalFilter) && $arGlobalFilter)
 		$GLOBALS[$arComponentParams["FILTER_NAME"]] = $arGlobalFilter;
 
-	if($bAjaxMode && $_POST["FILTER_HIT_PROP"])
-		$arComponentParams["FILTER_HIT_PROP"] = $_POST["FILTER_HIT_PROP"];
+	if(/*$bAjaxMode &&*/ $_REQUEST["FILTER_HIT_PROP"])
+		$arComponentParams["FILTER_HIT_PROP"] = $_REQUEST["FILTER_HIT_PROP"];
 
 	/* hide compare link from module options */
 	if(CMax::GetFrontParametrValue('CATALOG_COMPARE') == 'N')
@@ -49,8 +49,9 @@ if($bAjaxMode)
 	{
 		$arComponentParams['AJAX_REQUEST'] = 'Y';
 	}
+
 	?>
-	
+
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:catalog.section",
 		"catalog_block",

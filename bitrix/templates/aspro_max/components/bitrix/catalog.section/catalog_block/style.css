@@ -8,68 +8,6 @@
 .ordered-block .catalog_block_template .catalog_block .TYPE_2 .cost.prices .more-item-info > .svg{top:-2px;}
 .catalog_block_template .catalog_block.owl-carousel .catalog_item:hover .inner_wrap.TYPE_2 .footer_button {margin-top:0;}
 
-.catalog_block .catalog_item_wrapp {
-	position: relative !important;
-}
-
-.ajax_load.block .main_item_wrapper div.total_summ {
-	width: 100%;
-}
-body .ajax_load.table .main_item_wrapper .counter_wrapp div.total_summ > div {
-	padding-left: 4px !important;
-}
-.ajax_load .top_wrapper .catalog_item .footer_button {
-	opacity: 1 !important;
-	display: flex !important;
-    flex-direction: column;
-	height: auto !important;
-	visibility: visible !important;
-	position: absolute !important;
-    left: 0 !important;
-	width: calc(100% - 50px) !important;
-	margin-left: 25px !important;
-	margin-right: 25px !important;
-	text-align: center;
-	transition: all .1s ease;
-	bottom: 15px;
-}
-.ajax_load.block .footer_button .btn {
-	border-radius: 3px !important;
-	margin-bottom: 10px;
-	padding: 14px 7px 14px !important;
-}
-.catalog_block .counter_wrapp>.counter_block {
-	margin-right: 10px;
-	width: calc(50% - 10px);
-	border-width: 1px !important;
-	margin-bottom: 10px;
-}
-.counter_block.big .minus, .counter_block.big .plus {
-	width: 40px !important;
-}
-.ajax_load .top_wrapper .catalog_block .catalog_item > div {
-	padding-bottom: 85px;
-}
-.catalog_block .counter_wrapp {
-	display: flex;
-	flex-wrap: wrap;
-	order: 1;
-}
-.ajax_load .main_item_wrapper div.total_summ {
-	padding-bottom: 0;
-}
-.price_all {
-	display: flex;
-	order: 2;
-	font-weight: 600;
-	color: black;
-}
-.catalog_block .catalog_item {
-	height: 100% !important;
-}
-.counter_block.big, .counter_block.big input[type=text] {
-	height: 45px !important;
-}
 @media(min-width: 1200px){
 	.wrapper1 .right_block.wide_Y .ajax_load .top_wrapper .col-lg-3:not(.custom-line), .col-lg-5_2.custom-line{width:20%;}
 	.right_block.wide_Y .ajax_load .top_wrapper .col-lg-4:not(.custom-line), #main .catalog_page .section-content-wrapper.with-leftblock .col-lg-3:not(.custom-line), #main .catalog_in_content .section-content-wrapper.with-leftblock .col-lg-3:not(.custom-line){width:25%;}

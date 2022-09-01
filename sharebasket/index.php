@@ -4,21 +4,19 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Поделиться корзиной");
 ?>
 <?$APPLICATION->IncludeComponent(
-	"aspro:basket.share.max",
-	"",
+	"aspro:basket.share.max", 
+	".default", 
 	array(
 		"COMPOSITE_FRAME_MODE" => "A",
 		"COMPOSITE_FRAME_TYPE" => "AUTO",
 		"DETAIL_ACTUAL" => "Y",
 		"DETAIL_PRODUCT_PROPERTIES" => array(
-			"CML2_ARTICLE",
-			"COLOR_REF",
-			"COLOR_REF2",
-			"SIZES",
-			"SIZES2",
-			"SIZES3",
-			"SIZES4",
-			"SIZES5"
+			0 => "COLOR_REF",
+			1 => "SIZES",
+			2 => "SIZES2",
+			3 => "SIZES3",
+			4 => "SIZES4",
+			5 => "SIZES5",
 		),
 		"DETAIL_SET_PAGE_TITLE" => "Y",
 		"DETAIL_SHOW_AMOUNT" => "Y",
@@ -36,23 +34,25 @@ $APPLICATION->SetTitle("Поделиться корзиной");
 		"MESSAGE_404" => "",
 		"NEW_SET_PAGE_TITLE" => "Y",
 		"NEW_SHARE_SOCIALS" => array(
-			"VKONTAKTE",
-			"FACEBOOK",
-			"ODNOKLASSNIKI",
-			"TWITTER"
+			0 => "VKONTAKTE",
+			1 => "FACEBOOK",
+			2 => "ODNOKLASSNIKI",
+			3 => "TWITTER",
 		),
 		"NEW_SHOW_SHARE_SOCIALS" => "Y",
-		"NEW_SITE_ID" => "",
+		"NEW_SITE_ID" => "mk",
 		"NEW_USER_ID" => "",
 		"NEW_USE_CUSTOM_MESSAGES" => "N",
 		"SEF_FOLDER" => "/sharebasket/",
 		"SEF_MODE" => "Y",
-		"SEF_URL_TEMPLATES" => array(
-			"detail" => "#CODE#/",
-			"new" => "new/"
-		),
 		"SET_STATUS_404" => "Y",
-		"SHOW_404" => "N"
-	)
+		"SHOW_404" => "N",
+		"COMPONENT_TEMPLATE" => ".default",
+		"SEF_URL_TEMPLATES" => array(
+			"new" => "new/",
+			"detail" => "#CODE#/",
+		)
+	),
+	false
 );?>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

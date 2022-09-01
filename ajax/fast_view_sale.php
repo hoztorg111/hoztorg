@@ -1,6 +1,8 @@
 <?define("STATISTIC_SKIP_ACTIVITY_CHECK", "true");?>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");?>
-<a href="#" class="close jqmClose"><?=CMax::showIconSvg('', SITE_TEMPLATE_PATH.'/images/svg/Close.svg')?></a>
+<?if(!$GLOBALS['bMobileForm']):?>
+	<a href="#" class="close jqmClose"><?=CMax::showIconSvg('', SITE_TEMPLATE_PATH.'/images/svg/Close.svg')?></a>
+<?endif;?>
 <?
 $context = \Bitrix\Main\Context::getCurrent();
 $request = $context->getRequest();

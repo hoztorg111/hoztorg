@@ -144,7 +144,7 @@ $arUrlRewrite=array (
     'PATH' => '/info/brands/index.php',
     'SORT' => 100,
   ),
-  22 => 
+  30 => 
   array (
     'CONDITION' => '#^/sharebasket/#',
     'RULE' => '',

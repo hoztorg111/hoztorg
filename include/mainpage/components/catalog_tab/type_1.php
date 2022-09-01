@@ -66,7 +66,9 @@
 		"SET_STATUS_404" => "N",
 		"PRICE_CODE" => array(
 			0 => "BASE",
-			1 => "OPT",
+			1 => "Оптовая сайт",
+			2 => "Приходная сайт",
+			3 => "Розничная сайт",
 		),
 		"USE_PRICE_COUNT" => "Y",
 		"SHOW_ONE_CLICK_BUY" => "Y",
@@ -140,6 +142,14 @@
 		"PARTIAL_PRODUCT_PROPERTIES" => "N",
 		"ADD_PICT_PROP_OFFER" => "MORE_PHOTO",
 		"ID_FOR_TABS" => "Y",
+		"USER_FIELDS" => array(
+			0 => "",
+			1 => "",
+		),
+		"FIELDS" => array(
+			0 => "",
+			1 => "",
+		)
 	),
 	false
 );?>
