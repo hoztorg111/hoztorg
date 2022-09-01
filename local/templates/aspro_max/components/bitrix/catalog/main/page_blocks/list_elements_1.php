@@ -796,10 +796,10 @@ if($arTheme["HIDE_SITE_NAME_TITLE"]["VALUE"] == "N" && ($bBitrixAjax || $isAjaxF
 	$postfix = " - ".$arSite["NAME"];
 }
 
-$arSection['NAME'] = preg_replace('/([0-9].+) (.*)/', '$2', $arSection['NAME']);
+/*$arSection['NAME'] = preg_replace('/([0-9].+) (.*)/', '$2', $arSection['NAME']);
 $arValues['SECTION_META_TITLE'] = preg_replace('/([0-9].+) (.*)/', '$2', $arValues['SECTION_META_TITLE']);
 $APPLICATION->SetPageProperty("title", $arSection['NAME'] . $postfix);
-$APPLICATION->SetTitle($arSection['NAME'] . $postfix);
+$APPLICATION->SetTitle($arSection['NAME'] . $postfix);*/
 ?>
 <?if($itemsCnt):?>
 			<?if($isAjax=="Y"){

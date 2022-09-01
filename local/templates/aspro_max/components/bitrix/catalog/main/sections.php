@@ -590,6 +590,3 @@ CMax::setCatalogSectionDescription(
         'SEO_ITEM' => $arSeoItem,
     )
 );
-$title = preg_replace('/([0-9. ]{3,6})(.*)/', '$2', $section['NAME']);
-$APPLICATION->SetTitle($title);
-$APPLICATION->SetPageProperty('title', $title);
