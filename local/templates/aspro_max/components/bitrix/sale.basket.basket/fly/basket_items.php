@@ -311,7 +311,7 @@ if ($normalCount > 0):
 			<?if(!$arError["ERROR"]):?>
 				<?if (\Bitrix\Main\Config\Option::get("aspro.max", "SHOW_ONECLICKBUY_ON_BASKET_PAGE", "N") == "Y"):?>
 					<div class="basket_fast_order pull-right">
-						<a onclick="oneClickBuyBasket()" class="btn btn-default fast_order btn-lg"><span><?=GetMessage("SALE_FAST_ORDER")?></span></a>
+						<a onclick="oneClickBuyBasket()" class="btn btn-transparent-border-color fast_order btn-lg"><span><?=GetMessage("SALE_FAST_ORDER")?></span></a>
 						<div class="description"><?=GetMessage("SALE_FAST_ORDER_DESCRIPTION");?></div>
 					</div>
 				<?else:?>
@@ -332,7 +332,7 @@ if ($normalCount > 0):
 			<?if(!$arError["ERROR"] && \Bitrix\Main\Config\Option::get("aspro.max", "SHOW_ONECLICKBUY_ON_BASKET_PAGE", "N") == "Y"){?>
 				<div class="basket_back pull-right">
 					<div class="wrap_button">
-						<a href="<?=$arParams["PATH_TO_BASKET"]?>" class="btn btn-transparent-border-color btn-lg"><span><?=GetMessage("GO_TO_BASKET")?></span></a>
+						<a href="<?=$arParams["PATH_TO_BASKET"]?>" class="btn btn-default btn-lg"><span><?=GetMessage("GO_TO_BASKET")?></span></a>
 					</div>
 					<div class="description"><?=GetMessage("SALE_TO_BASKET_DESCRIPTION");?></div>
 				</div>
