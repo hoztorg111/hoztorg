@@ -15,5 +15,9 @@ $(document).ready(function(){
     //         $('.counter_block>span .svg').css('margin', '-7px 0 0 -6px');
     //     }
     // });
-    
+
+
+    $('.js-custom-btn-checkout').click(function () {
+        $('.btn-order-save')[0].click();
+    })
 });
